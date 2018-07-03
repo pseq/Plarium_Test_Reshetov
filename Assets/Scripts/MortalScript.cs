@@ -56,4 +56,13 @@ public class MortalScript : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        
+    }
 }
