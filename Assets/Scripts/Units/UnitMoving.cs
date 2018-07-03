@@ -23,13 +23,13 @@ public class UnitMoving : MonoBehaviour {
     {
         // При получении новой цели - заставляем агента двигаться.
         this.target = target;
-        agent.isStopped = false;
+        if (agent.isOnNavMesh) agent.isStopped = false;
     }
 	
     IEnumerator MovingRecalc()
     {
         // Циклично, с задержкой пересчитываем движение
-        while (agent)
+        while (agent.isOnNavMesh)
         {
             // Если обозначена цель - начинаем движение к ней.
             if (target) agent.SetDestination(target.position);

@@ -10,6 +10,7 @@ public class GameControl : MonoBehaviour {
     private ArrayList minions;
     private ArrayList enemies;
     private ArrayList selectedMinions;
+    public Text text;
 
     private void Awake()
     {
@@ -17,7 +18,29 @@ public class GameControl : MonoBehaviour {
         minions = new ArrayList();
         enemies = new ArrayList();
         selectedMinions = new ArrayList();
+
+        // Останавливаем производство всех юнитов
+
+        GameObject[] producers = GameObject.FindGameObjectsWithTag("Producer");
+        foreach (GameObject producer in producers)
+        {
+        }
+
+
+        StartCoroutine("Countdown");
     }
+
+    IEnumerator Countdown()
+    {
+        // Отсчитываем десять секунд.
+        for (int i = 9; i >= 0; i--)
+        {
+            text.text = i.ToString();
+            yield return new WaitForSeconds(1);
+        }
+        text.text = "GO";
+    }
+
 
     public void GoldIncrease(int inc)
     {
@@ -93,6 +116,8 @@ public class GameControl : MonoBehaviour {
         // Метод обновления маркера цели. Перебираем всех врагов и всех миньонов, проверяем, кто куда нацелен, и расставляем маркеры.
         foreach (GameObject enemy in enemies)
         {
+            Debug.Log("ENEMY" + enemy);
+
             enemy.GetComponent<UnitScript>().TargetMarkerOff();
             foreach (GameObject selectedMinion in selectedMinions)
             {

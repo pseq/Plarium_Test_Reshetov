@@ -25,7 +25,7 @@ public class HPbarScript : MonoBehaviour {
         if (bar) bar.localScale -= new Vector3((bar.localScale.x * decr), 0f, 0f);
     }
 
-    void HPPercentIncrease(float inc)
+    public void HPPercentIncrease(float inc)
     {
         // Удлинняем маркер при лечении.
         if (bar) bar.localScale += new Vector3((bar.localScale.x * inc), 0f, 0f);

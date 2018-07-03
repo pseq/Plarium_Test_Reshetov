@@ -6,34 +6,24 @@ public class FountainScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        // На какой стороне юнит?
+        //isMinion = gameControl.GetComponent<GameControl>().IsMinion(gameObject);
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("enter font");
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        Debug.Log("stay font");
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("trig ent font");
+        Debug.Log("OnTriggerEnter" + other.name);
 
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        Debug.Log("trig stay font");
+        Debug.Log("OnTriggerExit");
 
     }
 }

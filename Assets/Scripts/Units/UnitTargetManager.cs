@@ -10,6 +10,7 @@ public class UnitTargetManager : MonoBehaviour {
     public GameObject target;
     public bool isMinion;
     private ArrayList opponentArray;
+    public float targetUpdateDelay = 0.5f;
 
     // Use this for initialization
     void Start()
@@ -21,9 +22,7 @@ public class UnitTargetManager : MonoBehaviour {
 
         // На какой стороне юнит?
         isMinion = gameControl.GetComponent<GameControl>().IsMinion(gameObject);
-        // Получаем ссылку на массив с противниками.
-        if (isMinion) opponentArray = gameControl.GetComponent<GameControl>().GetEnemies();
-            else opponentArray = gameControl.GetComponent<GameControl>().GetMinions();
+        
 
     }
 
@@ -31,32 +30,40 @@ public class UnitTargetManager : MonoBehaviour {
     void Update()
     {
         // Активируем автовыбор цели.
-        if(!target) AutosetTarget();
+        //if(!target) AutosetTarget();
+        StartCoroutine("TargetUpdater");
     }
 
     public void AutosetTarget()
     {
-        // Нацеливаем на ближайшего противника.
-        SetTargetClosestEnemy();
+        // Получаем ссылку на массив с противниками.
+        if (isMinion) opponentArray = gameControl.GetComponent<GameControl>().GetEnemies();
+        else opponentArray = gameControl.GetComponent<GameControl>().GetMinions();
+
+        //TODO вставить алг поиска ближ противника
+        //TODO а пока двигаемся к первому (первому в массиве противников)
+        // а если его нет - к фонтану или дивану
+        if (isMinion)
+        {
+            if (!target)
+            {
+                if (opponentArray.Count > 0) SetTargetClosestEnemy();
+                else SetTarget(fountain);
+            }
+            else if ((target.name == "Fountain") && (opponentArray.Count > 0)) SetTargetClosestEnemy();
+        }
+        else
+        {
+            // заменить!!!
+            if (opponentArray.Count > 0) SetTargetClosestEnemy();
+            else
+                if (sofa) SetTarget(sofa);
+        }
     }
 
     public void SetTargetClosestEnemy()
     {
-        //TODO вставить алг поиска ближ противника
-        //TODO а пока двигаемся к первому (первому в массиве противников)
-        // а если его нет - к фонтану или дивану
-        Debug.Log(opponentArray.Count);
-        if (isMinion)
-        {
-            if (opponentArray.Count > 0) SetTarget((GameObject)opponentArray[0]);
-            else SetTarget(fountain);
-        }
-        else
-        {
-            if (opponentArray.Count > 0) SetTarget((GameObject)opponentArray[0]);
-            else
-                if (sofa) SetTarget(sofa);
-        }
+        SetTarget((GameObject)opponentArray[0]);
     }
 
 
@@ -70,6 +77,17 @@ public class UnitTargetManager : MonoBehaviour {
         // При выборе цели - начинаем к ней двигаться
         if (target) gameObject.GetComponent<UnitMoving>().SetTarget(target.transform);
         else gameObject.GetComponent<UnitMoving>().SetTarget(null);
+    }
+
+    IEnumerator TargetUpdater()
+    {
+
+        while (true)
+        {
+            AutosetTarget();
+            yield return new WaitForSeconds(targetUpdateDelay);
+        }
+
     }
 
 

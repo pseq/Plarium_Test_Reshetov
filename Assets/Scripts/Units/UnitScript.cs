@@ -55,7 +55,7 @@ public class UnitScript : MonoBehaviour {
         gameControl.GetComponent<GameControl>().DeleteSelected(gameObject);
 
         // Выключаем маркер текущей цели
-        gameControl.GetComponent<GameControl>().TargetMarkerUpdate();
+        if (targetMarker) gameControl.GetComponent<GameControl>().TargetMarkerUpdate();
     }
 
     public void TargetMarkerOn()

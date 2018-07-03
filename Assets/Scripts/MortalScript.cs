@@ -5,11 +5,14 @@ using UnityEngine;
 public class MortalScript : MonoBehaviour {
 
     public int hp;
+    public int maxhp;
+    public int healHPinSec;
     public float armor;
     public GameObject grave;
     public float attackBorder;
     private GameObject gameControl;
     private ArrayList selectableUnits;
+    private bool isMinion;
 
 
     // Use this for initialization
@@ -22,11 +25,11 @@ public class MortalScript : MonoBehaviour {
     {
         // При получении удара уменьшаем здоровье, с учетом брони.
         damage -= (int)(damage * armor);
-        int hp0 = hp;
-        hp -= damage;
 
         // Уменьшаем индикатор здоровья.
-        gameObject.GetComponent<HPbarScript>().HPPercentDecrease((float)damage / hp0);
+        gameObject.GetComponent<HPbarScript>().HPPercentDecrease((float)damage / hp);
+
+        hp -= damage;
 
         // Если здоровье на нуле - умираем.
         if (hp <= 0) Death();
@@ -58,11 +61,27 @@ public class MortalScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        bool isMinion = gameControl.GetComponent<GameControl>().GetMinions().Contains(gameObject);
+        if ((other.name == "Fountain") && isMinion) StartCoroutine("Healer");
     }
 
     private void OnTriggerExit(Collider other)
     {
+        StopCoroutine("Healer");
+    }
+
+    IEnumerator Healer()
+    {
         
+        while (hp < maxhp)
+        {
+            // Увеличиваем индикатор хп
+            gameObject.GetComponent<HPbarScript>().HPPercentIncrease((float)healHPinSec / hp);
+            // Увеличиваем хп
+            hp += healHPinSec;
+            // Выжидаем и повторяем.
+            yield return new WaitForSeconds(1);
+        }
+       
     }
 }
