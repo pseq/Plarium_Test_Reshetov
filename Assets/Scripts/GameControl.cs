@@ -11,6 +11,7 @@ public class GameControl : MonoBehaviour {
     private ArrayList enemies;
     private ArrayList selectedMinions;
     public Text text;
+    public Text goldIndicator;
 
     private void Awake()
     {
@@ -19,26 +20,51 @@ public class GameControl : MonoBehaviour {
         enemies = new ArrayList();
         selectedMinions = new ArrayList();
 
-        // Останавливаем производство всех юнитов
+        // Отображаем, сколько золота
+        goldIndicator.text = ("Gold: " + gold.ToString());
 
+        // Останавливаем производство всех юнитов
+        UnitProducingSwitcher();
+        StartCoroutine("Countdown");
+    }
+
+    private void UnitProducingSwitcher()
+    {
         GameObject[] producers = GameObject.FindGameObjectsWithTag("Producer");
         foreach (GameObject producer in producers)
         {
+            BarrackScript[] barracks = producer.GetComponents<BarrackScript>();
+            EnemyRespawner[] enRespawners = producer.GetComponents<EnemyRespawner>();
+            foreach (BarrackScript script in barracks)
+            {
+                if (script.enabled) script.enabled = false;
+                else script.enabled = true;
+            }
+            foreach (EnemyRespawner script in enRespawners)
+            {
+                if (script.enabled) script.enabled = false;
+                else script.enabled = true;
+            }
         }
-
-
-        StartCoroutine("Countdown");
     }
 
     IEnumerator Countdown()
     {
         // Отсчитываем десять секунд.
-        for (int i = 9; i >= 0; i--)
+        for (int i = 9; i >= -1; i--)
         {
             text.text = i.ToString();
+            if (i < 0) text.text = "GO";
             yield return new WaitForSeconds(1);
         }
-        text.text = "GO";
+        text.text = "";
+        UnitProducingSwitcher();
+    }
+
+    public void GameOver()
+    {
+        text.text = "Game over";
+        UnitProducingSwitcher();
     }
 
 
@@ -46,12 +72,14 @@ public class GameControl : MonoBehaviour {
     {
         // Добавляем золото
         gold += inc;
+        goldIndicator.text = ("Gold: " + gold.ToString());
     }
 
     public void GoldDecrease(int decr)
     {
         // Тратим золото
         gold -= decr;
+        goldIndicator.text = ("Gold: " + gold.ToString());
     }
 
     public int GetGoldReserve()

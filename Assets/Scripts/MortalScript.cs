@@ -54,6 +54,12 @@ public class MortalScript : MonoBehaviour {
 
         // Сообщаем общему скрипту, что нужно удалить юнита из всех списков.
         gameControl.GetComponent<GameControl>().DeleteUnit(gameObject);
+        
+        //Если уничтожен диван - выводим геймовер
+        if (gameObject.name == "DeveloperSofa") gameControl.GetComponent<GameControl>().GameOver();
+
+        //Если убит враг + золото
+        if (!isMinion) gameControl.GetComponent<GameControl>().GoldIncrease();
 
         // Удаляем юнита.
         Destroy(gameObject);
