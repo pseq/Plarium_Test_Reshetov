@@ -44,8 +44,8 @@ public class SelectorScript : EventTrigger {
     {
         Rect rectangle = new Rect(Vector2.zero, Vector2.zero);
         //вычисляем размеры прямоугольника, независимо от знака и значений координат.
-        rectangle.width = Mathf.Abs(Mathf.Abs(startPoint.x) - Mathf.Abs(endPoint.x));
-        rectangle.height = Mathf.Abs(Mathf.Abs(startPoint.y) - Mathf.Abs(endPoint.y));
+        rectangle.width = Mathf.Abs(startPoint.x - endPoint.x);
+        rectangle.height = Mathf.Abs(startPoint.y - endPoint.y);
 
         // Вычисляем координаты пивота.
         if (startPoint.x > endPoint.x) rectangle.x = pivotValues.x;
@@ -61,8 +61,8 @@ public class SelectorScript : EventTrigger {
     {
         Rect rectangle = new Rect(Vector2.zero, Vector2.zero);
         // Вычисляем размеры прямоугольника, независимо от знака и значений координат.
-        rectangle.width = Mathf.Abs(Mathf.Abs(startPoint.x) - Mathf.Abs(endPoint.x));
-        rectangle.height = Mathf.Abs(Mathf.Abs(startPoint.y) - Mathf.Abs(endPoint.y));
+        rectangle.width = Mathf.Abs(startPoint.x - endPoint.x);
+        rectangle.height = Mathf.Abs(startPoint.y - endPoint.y);
 
         // Вычисляем координаты прямоугольника.
         if (startPoint.x > endPoint.x) rectangle.x = endPoint.x; 

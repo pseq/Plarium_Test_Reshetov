@@ -14,22 +14,25 @@ public class UnitMoving : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // Получаем навигационного агента юнита.
-        agent = GetComponent<NavMeshAgent>();
+        agent = gameObject.GetComponent<NavMeshAgent>();
+
         // И запускаем пересчет движения.
-        StartCoroutine("MovingRecalc");
+        StartCoroutine(MovingRecalc());
     }
 
-    public void SetTarget(Transform target)
+    public void SetNavTarget(Transform target)
     {
+        agent = gameObject.GetComponent<NavMeshAgent>();
         // При получении новой цели - заставляем агента двигаться.
         this.target = target;
-        if (agent.isOnNavMesh) agent.isStopped = false;
+        if (agent.isActiveAndEnabled) agent.isStopped = false;
     }
 	
     IEnumerator MovingRecalc()
     {
+
         // Циклично, с задержкой пересчитываем движение
-        while (agent.isOnNavMesh)
+        while (agent.isActiveAndEnabled)
         {
             // Если обозначена цель - начинаем движение к ней.
             if (target) agent.SetDestination(target.position);

@@ -25,7 +25,7 @@ public class GameControl : MonoBehaviour {
 
         // Останавливаем производство всех юнитов
         UnitProducingSwitcher();
-        StartCoroutine("Countdown");
+        StartCoroutine(Countdown());
     }
 
     private void UnitProducingSwitcher()
@@ -55,7 +55,7 @@ public class GameControl : MonoBehaviour {
         {
             text.text = i.ToString();
             if (i < 0) text.text = "GO";
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1f);
         }
         text.text = "";
         UnitProducingSwitcher();
@@ -144,8 +144,6 @@ public class GameControl : MonoBehaviour {
         // Метод обновления маркера цели. Перебираем всех врагов и всех миньонов, проверяем, кто куда нацелен, и расставляем маркеры.
         foreach (GameObject enemy in enemies)
         {
-            Debug.Log("ENEMY" + enemy);
-
             enemy.GetComponent<UnitScript>().TargetMarkerOff();
             foreach (GameObject selectedMinion in selectedMinions)
             {

@@ -21,7 +21,7 @@ public class UnitBattleController : MonoBehaviour {
         AttackMarker.material.color = markerColor;
 
         // Запускаем проверку цели.
-        StartCoroutine("TargetCheck");
+        StartCoroutine(TargetCheck());
     }
 
     public float GetAttackRange()
@@ -47,7 +47,7 @@ public class UnitBattleController : MonoBehaviour {
                     if (distance <= (attackRange + attackBorder))
                     {
                         // Если всё совпадает - атакуем.
-                        yield return StartCoroutine("Attack");
+                        yield return StartCoroutine(Attack());
                     }
                 }
             }
@@ -63,7 +63,7 @@ public class UnitBattleController : MonoBehaviour {
             // Наносим удар.
             target.GetComponent<MortalScript>().Hit(attackDamage);
             // И рисуем маркер атаки.
-            StartCoroutine("AttackAnimation");
+            StartCoroutine(AttackAnimation());
         }
         yield return new WaitForSeconds(attackDelay);
     }

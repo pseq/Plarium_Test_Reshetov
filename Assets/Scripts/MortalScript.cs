@@ -7,18 +7,20 @@ public class MortalScript : MonoBehaviour {
     public int hp;
     public int maxhp;
     public int healHPinSec;
+    public int priseForHead;
     public float armor;
     public GameObject grave;
     public float attackBorder;
     private GameObject gameControl;
-    private ArrayList selectableUnits;
-    private bool isMinion;
+    //private ArrayList selectableUnits;
+    public bool isMinion;
 
 
     // Use this for initialization
     void Start () {
         // Получаем объект с общими параметрами игры.
         gameControl = GameObject.FindGameObjectWithTag("GameController");
+        isMinion = gameControl.GetComponent<GameControl>().GetMinions().Contains(gameObject);
     }
 
     public void Hit(int damage)
@@ -39,6 +41,7 @@ public class MortalScript : MonoBehaviour {
     public void Death()
     {
         // Передаем индикатор цели следующему врагу.
+        /*
         selectableUnits = gameControl.GetComponent<GameControl>().GetMinions();
         foreach (GameObject SelectableUnit in selectableUnits)
         {
@@ -48,9 +51,7 @@ public class MortalScript : MonoBehaviour {
                 SelectableUnit.gameObject.GetComponent<UnitScript>().SetSelected();
             }
         }
-
-        // Рисуем могилку или руины.
-        Instantiate(grave, transform.position, Quaternion.identity);
+        */
 
         // Сообщаем общему скрипту, что нужно удалить юнита из всех списков.
         gameControl.GetComponent<GameControl>().DeleteUnit(gameObject);
@@ -59,8 +60,10 @@ public class MortalScript : MonoBehaviour {
         if (gameObject.name == "DeveloperSofa") gameControl.GetComponent<GameControl>().GameOver();
 
         //Если убит враг + золото
-        if (!isMinion) gameControl.GetComponent<GameControl>().GoldIncrease();
+        if (!isMinion) gameControl.GetComponent<GameControl>().GoldIncrease(priseForHead);
 
+        // Рисуем могилку или руины.
+        Instantiate(grave, transform.position, Quaternion.identity);
         // Удаляем юнита.
         Destroy(gameObject);
     }
@@ -68,7 +71,7 @@ public class MortalScript : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         bool isMinion = gameControl.GetComponent<GameControl>().GetMinions().Contains(gameObject);
-        if ((other.name == "Fountain") && isMinion) StartCoroutine("Healer");
+        if ((other.name == "Fountain") && isMinion) StartCoroutine(Healer());
     }
 
     private void OnTriggerExit(Collider other)

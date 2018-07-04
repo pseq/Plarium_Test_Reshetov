@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+
 
 public class UnitTargetManager : MonoBehaviour {
 
@@ -10,7 +12,7 @@ public class UnitTargetManager : MonoBehaviour {
     public GameObject target;
     public bool isMinion;
     private ArrayList opponentArray;
-    public float targetUpdateDelay = 0.5f;
+    public float targetUpdateDelay;
 
     // Use this for initialization
     void Start()
@@ -22,24 +24,18 @@ public class UnitTargetManager : MonoBehaviour {
 
         // На какой стороне юнит?
         isMinion = gameControl.GetComponent<GameControl>().IsMinion(gameObject);
-        
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // Активируем автовыбор цели.
-        //if(!target) AutosetTarget();
-        StartCoroutine("TargetUpdater");
-    }
-
-    public void AutosetTarget()
-    {
         // Получаем ссылку на массив с противниками.
         if (isMinion) opponentArray = gameControl.GetComponent<GameControl>().GetEnemies();
         else opponentArray = gameControl.GetComponent<GameControl>().GetMinions();
 
+        StartCoroutine(TargetUpdater());
+        //StartCoroutine("TEST");
+
+    }
+
+    public void AutosetTarget()
+    {
         //TODO вставить алг поиска ближ противника
         //TODO а пока двигаемся к первому (первому в массиве противников)
         // а если его нет - к фонтану или дивану
@@ -74,20 +70,19 @@ public class UnitTargetManager : MonoBehaviour {
         // Миньонам - переставить маркеры цели
         if (isMinion) gameControl.GetComponent<GameControl>().TargetMarkerUpdate();
 
+
         // При выборе цели - начинаем к ней двигаться
-        if (target) gameObject.GetComponent<UnitMoving>().SetTarget(target.transform);
-        else gameObject.GetComponent<UnitMoving>().SetTarget(null);
+        if (target) gameObject.GetComponent<UnitMoving>().SetNavTarget(target.transform);
+        //else gameObject.GetComponent<UnitMoving>().SetTarget(null);
     }
 
     IEnumerator TargetUpdater()
     {
-
         while (true)
         {
             AutosetTarget();
             yield return new WaitForSeconds(targetUpdateDelay);
         }
-
     }
 
 

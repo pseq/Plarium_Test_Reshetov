@@ -25,8 +25,10 @@ public class UnitScript : MonoBehaviour {
         attackMarker.localScale = new Vector3(attackRange * 2, attackRange * 2, 1);
         // Получаем объект с общими параметрами игры.
         gameControl = GameObject.FindGameObjectWithTag("GameController");
+
+        selectableUnits = gameControl.GetComponent<GameControl>().GetMinions();
     }
-	
+
     public void Heal()
     {
 
@@ -60,19 +62,18 @@ public class UnitScript : MonoBehaviour {
 
     public void TargetMarkerOn()
     {
-        targetMarker.enabled = true;
+        if (targetMarker) targetMarker.enabled = true;
     }
 
     public void TargetMarkerOff()
     {
-        targetMarker.enabled = false;
+        if (targetMarker) targetMarker.enabled = false;
     }
 
     private void OnMouseDown()
     {
         // По нажатию кнопки - снимаем все остальные выделения
         // и выделяем юнита. Но только если он миньон.
-        selectableUnits = gameControl.GetComponent<GameControl>().GetMinions();
         if (selectableUnits.Contains(gameObject))
         {
             foreach (GameObject SelectableUnit in selectableUnits) SelectableUnit.gameObject.GetComponent<UnitScript>().UnsetSelected();

@@ -26,12 +26,16 @@ public class BarrackScript : MonoBehaviour {
 
     IEnumerator UnitGenerationCycle()
     {
-        while (gameControl.GetComponent<GameControl>().GetGoldReserve() >= unitCost)
+        while (true)
         {
-            // Генерируем юнита.
-            MinionGenerate();
-            // Берем за это золото.
-            gameControl.GetComponent<GameControl>().GoldDecrease(unitCost);
+            // Если хватает золота
+            if (gameControl.GetComponent<GameControl>().GetGoldReserve() >= unitCost)
+            {
+                // Генерируем юнита.
+                MinionGenerate();
+                // Берем за это золото.
+                gameControl.GetComponent<GameControl>().GoldDecrease(unitCost);
+            }
             // Выжидаем и повторяем.
             yield return new WaitForSeconds(respawnTimeDelta);
         }

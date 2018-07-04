@@ -10,6 +10,7 @@ TagManager:
   - Fountain
   - DeveloperSofa
   - Producer
+  - HPbar
   layers:
   - Default
   - TransparentFX
