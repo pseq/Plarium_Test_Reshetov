@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 15
-  attackDamage: 50
+  attackDamage: 10
   attackDelay: 2
   checkDelay: 0.5
 --- !u!114 &114390338354132540
@@ -350,6 +350,7 @@ MonoBehaviour:
   target: {fileID: 0}
   stoppingDistance: 2
   recalculateMovingDelay: 0.5
+  recalculateDestRange: 1
 --- !u!135 &135561916922770414
 SphereCollider:
   m_ObjectHideFlags: 1

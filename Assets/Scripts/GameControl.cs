@@ -55,7 +55,7 @@ public class GameControl : MonoBehaviour {
         {
             text.text = i.ToString();
             if (i < 0) text.text = "GO";
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.1f);
         }
         text.text = "";
         UnitProducingSwitcher();
