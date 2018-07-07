@@ -351,10 +351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c88a1b8998ae7499427bc872b8989c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 3
+  attackRange: 5
   attackDamage: 10
-  attackDelay: 0.5
-  checkDelay: 0.5
+  attackSpeed: 1
 --- !u!114 &114143121132810320
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -366,7 +365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 004ac71a66719db4589f5be97a41b3e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Selected: 0
 --- !u!114 &114325711503359170
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -389,14 +387,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9234bd5dbe2a34199a82d4cae21bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
   maxhp: 100
-  healHPinSec: 1
+  healHPinSec: 5
   priseForHead: 5
   armor: 0.2
   grave: {fileID: 1679232578528270, guid: 93a3b894f0be14142ba558ff34133700, type: 2}
-  attackBorder: 0
-  isMinion: 0
 --- !u!114 &114446355361251822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -408,10 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c61eb42e5c5fa74292a067ea30e5456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   stoppingDistance: 2
-  recalculateMovingDelay: 0.5
-  recalculateDestRange: 1
 --- !u!114 &114585824974437050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -423,9 +415,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d80e5a94f6606846bad179f2d01a44a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  isMinion: 0
-  targetUpdateDelay: 0.5
 --- !u!135 &135757613858577046
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -447,7 +436,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 15
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

@@ -9,10 +9,10 @@ public class UnitTargetManager : MonoBehaviour {
     private GameObject gameControl;
     private GameObject fountain;
     private GameObject sofa;
-    public GameObject target;
-    public bool isMinion;
+    private GameObject target;
+    private bool isMinion;
     private ArrayList opponentArray;
-    public float targetUpdateDelay;
+    private float targetUpdateDelay = .5f;
     private GameObject firstTarget;
 
     // Use this for initialization

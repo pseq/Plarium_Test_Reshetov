@@ -6,22 +6,20 @@ using UnityEngine.AI;
 public class BarrackScript : MonoBehaviour {
 
     public float respawnTimeDelta;
-    public int level;
+    private int level;
     public int maxLevel;
     public int levelImprover;
     public int countToUpgrade;
     public int unitCost;
     public GameObject unit;
-    public float respawnArea;
     public Material unitMaterial;
     public GameObject gameControl;
-    public GameObject InitialTarget;
     private int counter;
 
     // Use this for initialization
     void Start()
     {
-
+        level = 1;
         counter = 0;
         // Начинаем генерацию юнитов.
         StartCoroutine(UnitGenerationCycle());

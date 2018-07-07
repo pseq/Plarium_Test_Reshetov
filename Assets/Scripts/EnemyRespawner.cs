@@ -7,8 +7,9 @@ using UnityEngine.AI;
 public class EnemyRespawner : MonoBehaviour {
 
     public float respawnTimeDelta;
+    public float betweenWavesDelta;
     public GameObject unit;
-    public float respawnArea;
+    private float respawnArea = 10f;
     public Material enemyMaterial;
     public GameObject gameControl;
     public GameObject InitialTarget;
@@ -49,7 +50,7 @@ public class EnemyRespawner : MonoBehaviour {
             }
             waves--;
             // И как только убили всех - немного ждем и запускаем следующую волну
-            yield return new WaitForSeconds(testAliveDelay);
+            yield return new WaitForSeconds(betweenWavesDelta + testAliveDelay);
             // С количеством равным текущему количеству миньонов, но примерно распределенным по всем респаунам
             avengersCount = (gameControl.GetComponent<GameControl>().GetMinions().Count / respawnersCount);
             StartCoroutine(EnemyGenerationCycle(avengersCount));

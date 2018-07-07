@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class UnitScript : MonoBehaviour {
 
-    public bool Selected;
+    private bool Selected;
     private SpriteRenderer SelectMarker;
     private MeshRenderer targetMarker;
     private ArrayList selectableUnits;
@@ -24,11 +24,6 @@ public class UnitScript : MonoBehaviour {
         gameControl = GameObject.FindGameObjectWithTag("GameController");
 
         selectableUnits = gameControl.GetComponent<GameControl>().GetMinions();
-    }
-
-    public void Heal()
-    {
-
     }
 
     public void SetSelected ()

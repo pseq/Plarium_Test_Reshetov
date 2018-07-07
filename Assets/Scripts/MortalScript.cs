@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class MortalScript : MonoBehaviour {
 
-    public float hp;
+    private float hp;
     public float maxhp;
     public float healHPinSec;
     public int priseForHead;
     public float armor;
     public GameObject grave;
-    public float attackBorder;
     private GameObject gameControl;
-    public bool isMinion;
+    private bool isMinion;
 
 
     // Use this for initialization
@@ -24,10 +23,10 @@ public class MortalScript : MonoBehaviour {
         hp = maxhp;
     }
 
-    public void Hit(int damage)
+    public void Hit(float damage)
     {
         // При получении удара уменьшаем здоровье, с учетом брони.
-        damage -= (int)(damage * armor);
+        damage *= 1 - armor;
 
 
         // Уменьшаем индикатор здоровья.
@@ -48,10 +47,6 @@ public class MortalScript : MonoBehaviour {
         
         //Если уничтожен диван - выводим геймовер
         if (gameObject.name == "DeveloperSofa") gameControl.GetComponent<GameControl>().GameOver();
-
-        //TEST
-        //GameObject[] respawners = (GameObject)FindObjectsOfType(typeof(EnemyRespawner));
-
 
         // Делаем проверку на победу
         if (gameControl.GetComponent<GameControl>().GetEnemies().Count < 1)

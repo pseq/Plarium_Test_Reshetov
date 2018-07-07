@@ -6,9 +6,9 @@ public class UnitBattleController : MonoBehaviour {
 
     private GameObject target;
     public float attackRange;
-    public int attackDamage;
-    public float attackDelay;
-    public float checkDelay;
+    public float attackDamage;
+    public float attackSpeed;
+    private float checkDelay = .5f;
     private SpriteRenderer attackMarker;
     private Color markerColor;
 
@@ -53,9 +53,8 @@ public class UnitBattleController : MonoBehaviour {
                 if (gameObject.GetComponent<UnitTargetManager>().IsTargetEnemy())
                 {
                     // Проверка расстояния до цели.
-                    float attackBorder = target.GetComponent<MortalScript>().attackBorder;
                     float distance = Vector3.Distance(transform.position, target.transform.position);
-                    if (distance <= (attackRange + attackBorder))
+                    if (distance <= attackRange)
                     {
                         // Если всё совпадает - атакуем.
                         yield return StartCoroutine(Attack());
@@ -76,7 +75,7 @@ public class UnitBattleController : MonoBehaviour {
             // И рисуем маркер атаки.
             StartCoroutine(AttackAnimation());
         }
-        yield return new WaitForSeconds(attackDelay);
+        yield return new WaitForSeconds(1 / attackSpeed);
     }
  
     IEnumerator AttackAnimation()

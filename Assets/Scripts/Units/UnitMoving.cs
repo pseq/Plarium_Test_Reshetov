@@ -6,10 +6,10 @@ using UnityEngine.AI;
 public class UnitMoving : MonoBehaviour {
 
     private NavMeshAgent agent;
-    public Transform target;
-    public float stoppingDistance = 0;
-    public float recalculateMovingDelay;
-    public float recalculateDestRange;
+    private Transform target;
+    public float stoppingDistance;
+    private float recalculateMovingDelay = .5f;
+    private float recalculateDestRange = .5f;
     private Vector3 oldDestination;
 
 
