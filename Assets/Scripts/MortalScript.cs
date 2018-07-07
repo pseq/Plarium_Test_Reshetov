@@ -49,6 +49,22 @@ public class MortalScript : MonoBehaviour {
         //Если уничтожен диван - выводим геймовер
         if (gameObject.name == "DeveloperSofa") gameControl.GetComponent<GameControl>().GameOver();
 
+        //TEST
+        //GameObject[] respawners = (GameObject)FindObjectsOfType(typeof(EnemyRespawner));
+
+
+        // Делаем проверку на победу
+        if (gameControl.GetComponent<GameControl>().GetEnemies().Count < 1)
+        {
+            bool respawnInProgress = false;
+            EnemyRespawner[] respawners = (EnemyRespawner[]) FindObjectsOfType(typeof(EnemyRespawner));
+            foreach(EnemyRespawner resp in respawners)
+            {
+                respawnInProgress = respawnInProgress || resp.AnybodyElse(); //resp.GetComponent<EnemyRespawner>().AnybodyElse();
+            }
+            if (!respawnInProgress) gameControl.GetComponent<GameControl>().Win();
+        }
+
         //Если убит враг + золото
         if (!isMinion) gameControl.GetComponent<GameControl>().GoldIncrease(priseForHead);
 

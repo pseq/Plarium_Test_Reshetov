@@ -16,6 +16,7 @@ public class EnemyRespawner : MonoBehaviour {
     public int waves;
 
     private int respawnersCount;
+    private int avengersCount;
     private float testAliveDelay = 0.1f;
 
     // Use this for initialization
@@ -39,17 +40,18 @@ public class EnemyRespawner : MonoBehaviour {
 
     IEnumerator WaveStart()
     {
-        for (int i = waves; i > 0; i--)
+        while (waves > 0)
         {
             // Проверяем количество оставшихся юнитов периодически
             while (gameControl.GetComponent<GameControl>().GetEnemies().Count > 0)
             {
                 yield return new WaitForSeconds(testAliveDelay);
             }
+            waves--;
             // И как только убили всех - немного ждем и запускаем следующую волну
             yield return new WaitForSeconds(testAliveDelay);
             // С количеством равным текущему количеству миньонов, но примерно распределенным по всем респаунам
-            int avengersCount = (gameControl.GetComponent<GameControl>().GetMinions().Count / respawnersCount);
+            avengersCount = (gameControl.GetComponent<GameControl>().GetMinions().Count / respawnersCount);
             StartCoroutine(EnemyGenerationCycle(avengersCount));
         }
     }
@@ -60,11 +62,12 @@ public class EnemyRespawner : MonoBehaviour {
         for (int i = 1; i <= number; i++)
         {
             EnemyGenerate();
+            avengersCount--;
             yield return new WaitForSeconds(respawnTimeDelta);
         }
     }
 
-    void EnemyGenerate()
+    private void EnemyGenerate()
     {
         // Создаем врага.
         GameObject newBornEnemy = Instantiate(unit);
@@ -79,5 +82,11 @@ public class EnemyRespawner : MonoBehaviour {
         // Телепортируем свежесозданного юнита в случайную точку рядом с точкой респауна
         Vector2 newBornPositionDelta = Random.insideUnitCircle * respawnArea;
         newBornEnemy.GetComponent<NavMeshAgent>().Warp(gameObject.transform.position + new Vector3(newBornPositionDelta.x, 0, newBornPositionDelta.y));
+    }
+
+    // Будут ли ещё враги?
+    public bool AnybodyElse()
+    {
+        return ((waves > 0) || (avengersCount > 0));
     }
 }

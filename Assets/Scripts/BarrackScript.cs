@@ -7,28 +7,24 @@ public class BarrackScript : MonoBehaviour {
 
     public float respawnTimeDelta;
     public int level;
-    public float levelImprover;
+    public int maxLevel;
+    public int levelImprover;
+    public int countToUpgrade;
     public int unitCost;
     public GameObject unit;
     public float respawnArea;
     public Material unitMaterial;
     public GameObject gameControl;
     public GameObject InitialTarget;
+    private int counter;
 
     // Use this for initialization
     void Start()
     {
-        // В зависимости от уровня казармы меняется время генерации юнита.
-        respawnTimeDelta = Mathf.Abs(respawnTimeDelta - level * levelImprover);
+
+        counter = 0;
         // Начинаем генерацию юнитов.
-
         StartCoroutine(UnitGenerationCycle());
-
-        //gameObject.GetComponent<HPbarScript>().HPchange(0.1f);
-
-        //StartCoroutine(MinionGenerate());
-
-
     }
 
     IEnumerator UnitGenerationCycle()
@@ -49,25 +45,6 @@ public class BarrackScript : MonoBehaviour {
         }
     }
 
-    //old
-    /*
-    IEnumerator UnitGenerationCycle()
-    {
-        while (true)
-        {
-            // Если хватает золота
-            if (gameControl.GetComponent<GameControl>().GetGoldReserve() >= unitCost)
-            {
-                // Генерируем юнита.
-                MinionGenerate();
-                gameControl.GetComponent<GameControl>().GoldDecrease(unitCost);
-            }
-            // Выжидаем и повторяем.
-            yield return new WaitForSeconds(respawnTimeDelta);
-        }
-    }
-    */
-
     IEnumerator MinionGenerate()
     {
         float delta = respawnTimeDelta / 100;
@@ -79,14 +56,39 @@ public class BarrackScript : MonoBehaviour {
             yield return new WaitForSeconds(delta);
         }
         // Создаем экземпляр нового юнита и помещаем его за казарму.
-        GameObject newBornMinion = Instantiate(unit, gameObject.transform.position + Vector3.back * 10, Quaternion.identity);
-        // Добавляем юнита в массив миньонов.
+        GameObject newBornMinion = Instantiate(unit);
+        newBornMinion.transform.position = new Vector3(transform.position.x, 0, transform.position.z - 10);
+        // Добавляем юнита в массив миньонов и увеличиваем счетчик
         gameControl.GetComponent<GameControl>().AddMinion(newBornMinion);
+        counter++;
         // Применяем к юниту материал.
         newBornMinion.GetComponent<MeshRenderer>().material = unitMaterial;
-
-        // Возвращаем прогресс-бар в исходное
+        // Возвращаем прогресс-бар в исходное.
         gameObject.GetComponent<HPbarScript>().HPchange(true);
+        // Если количество произведенных юнитов больше заданного - апгрейдим казарму.
+        if (counter >= countToUpgrade) BarrackUpgrade();
+    }
 
+    private void BarrackUpgrade()
+    {
+        if (level < maxLevel)
+        {
+            level++;
+            // В зависимости от уровня казармы меняется время и цена генерации юнита.
+            respawnTimeDelta = respawnTimeDelta / (level * levelImprover);
+            unitCost = unitCost / (level * levelImprover);
+
+            StartCoroutine(UpgradeAnimation());
+        }
+    }
+
+    IEnumerator UpgradeAnimation()
+    {
+        // Рисуем плавный подъем казармы.
+        for (float i = 0; i < 1; i += .05f)
+        {
+            transform.Translate(Vector3.up * .15f);
+            yield return new WaitForSeconds(.05f);
+        }
     }
 }

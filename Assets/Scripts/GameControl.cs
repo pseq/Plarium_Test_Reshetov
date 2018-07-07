@@ -37,12 +37,20 @@ public class GameControl : MonoBehaviour {
             EnemyRespawner[] enRespawners = producer.GetComponents<EnemyRespawner>();
             foreach (BarrackScript script in barracks)
             {
-                if (script.enabled) script.enabled = false;
+                if (script.enabled)
+                {
+                    script.enabled = false;
+                    script.StopAllCoroutines();
+                }
                 else script.enabled = true;
             }
             foreach (EnemyRespawner script in enRespawners)
             {
-                if (script.enabled) script.enabled = false;
+                if (script.enabled)
+                {
+                    script.enabled = false;
+                    script.StopAllCoroutines();
+                }
                 else script.enabled = true;
             }
         }
@@ -64,6 +72,12 @@ public class GameControl : MonoBehaviour {
     public void GameOver()
     {
         text.text = "Game over";
+        UnitProducingSwitcher();
+    }
+
+    public void Win()
+    {
+        text.text = "minions wins";
         UnitProducingSwitcher();
     }
 
