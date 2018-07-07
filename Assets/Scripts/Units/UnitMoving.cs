@@ -29,7 +29,7 @@ public class UnitMoving : MonoBehaviour {
         agent = gameObject.GetComponent<NavMeshAgent>();
         // При получении новой цели - заставляем агента двигаться.
         this.target = target;
-        Debug.Log("nav target = " + target);
+        //Debug.Log("nav target = " + target);
 
         if (agent.isActiveAndEnabled) agent.isStopped = false;
     }
@@ -55,7 +55,7 @@ public class UnitMoving : MonoBehaviour {
             // Проверяем тип цели - враг или нет
             bool isEnemy = gameObject.GetComponent<UnitTargetManager>().IsTargetEnemy();
             // Если враг - то подходим к нему не ближе, чем на половину расстояния атаки
-            if (isEnemy) agent.stoppingDistance = gameObject.GetComponent<UnitBattleController>().attackRange/2;
+            if (isEnemy) agent.stoppingDistance = gameObject.GetComponent<UnitBattleController>().attackRange;
             else agent.stoppingDistance = stoppingDistance;
             yield return new WaitForSeconds(recalculateMovingDelay);
         }

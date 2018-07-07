@@ -19,10 +19,7 @@ public class UnitScript : MonoBehaviour {
         // Получаем ссылку на маркер цели этого юнита, и выключаем его.
         targetMarker = transform.Find("TargetMarker").GetComponent<MeshRenderer>();
         targetMarker.enabled = false;
-        // Получаем ссылку на маркер атаки этого юнита, устанавливаем его размер по радиусу атаки юнита.
-        Transform attackMarker = transform.Find("AttackMarker");
-        float attackRange = gameObject.GetComponent<UnitBattleController>().GetAttackRange();
-        attackMarker.localScale = new Vector3(attackRange * 2, attackRange * 2, 1);
+
         // Получаем объект с общими параметрами игры.
         gameControl = GameObject.FindGameObjectWithTag("GameController");
 

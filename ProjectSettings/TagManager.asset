@@ -11,6 +11,7 @@ TagManager:
   - DeveloperSofa
   - Producer
   - HPbar
+  - HPbarLeader
   layers:
   - Default
   - TransparentFX

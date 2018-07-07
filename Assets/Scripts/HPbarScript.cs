@@ -4,40 +4,42 @@ using UnityEngine;
 
 public class HPbarScript : MonoBehaviour {
 
-    private Transform bar;
+    private Transform barBase;
     private Transform leader;
+    private SpriteRenderer hpBar;
+    private Vector2 size0;
 
     // Use this for initialization
     void Start () {
         // Получаем трансформ индикатора статуса здоровья.
-        bar = transform.Find("HP");
-        leader = GameObject.FindWithTag("HPbar").transform;
+        barBase = transform.Find("HP");
+        hpBar = barBase.Find("HPbar").GetComponent<SpriteRenderer>();
+        hpBar.drawMode = SpriteDrawMode.Sliced;
+        leader = GameObject.FindWithTag("HPbarLeader").transform;
+
+        size0 = hpBar.size;
     }
 
     // Update is called once per frame
     void Update () {
         // Поворачиваем индикатор вслед за камерой.
-        bar.LookAt(leader);
-        //bar.LookAt(Camera.main.transform);
-	}
+        barBase.LookAt(leader);
+    }
 
-    public void HPPercentDecrease(float decr)
+    public void HPchange(float k)
     {
-        // Укорачиваем маркер при получении урона.
-        if (bar)
+        if (hpBar)
         {
-            float d = (32f / 10f) * bar.localScale.x * decr / 2f;
-            bar.localScale -= new Vector3((bar.localScale.x * decr), 0f, 0f);
-            bar.position -= Vector3.right * d;
-
+            hpBar.size = new Vector2(hpBar.size.x * k, hpBar.size.y);
         }
     }
 
-    public void HPPercentIncrease(float inc)
+    public void HPchange(bool reset)
     {
-        // Удлинняем маркер при лечении.
-        float d = (32f / 10f) * bar.localScale.x * inc / 2f;
-        bar.localScale += new Vector3((bar.localScale.x * inc), 0f, 0f);
-        bar.position += Vector3.right * d;
+        if (hpBar)
+        {
+            if (reset) hpBar.size = size0;
+            else hpBar.size = Vector2.zero;
+        }
     }
 }

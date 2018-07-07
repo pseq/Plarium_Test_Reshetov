@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class MortalScript : MonoBehaviour {
 
-    public int hp;
-    public int maxhp;
-    public int healHPinSec;
+    public float hp;
+    public float maxhp;
+    public float healHPinSec;
     public int priseForHead;
     public float armor;
     public GameObject grave;
     public float attackBorder;
     private GameObject gameControl;
-    //private ArrayList selectableUnits;
     public bool isMinion;
 
 
@@ -21,6 +20,8 @@ public class MortalScript : MonoBehaviour {
         // Получаем объект с общими параметрами игры.
         gameControl = GameObject.FindGameObjectWithTag("GameController");
         isMinion = gameControl.GetComponent<GameControl>().GetMinions().Contains(gameObject);
+
+        hp = maxhp;
     }
 
     public void Hit(int damage)
@@ -28,10 +29,12 @@ public class MortalScript : MonoBehaviour {
         // При получении удара уменьшаем здоровье, с учетом брони.
         damage -= (int)(damage * armor);
 
+
         // Уменьшаем индикатор здоровья.
-        gameObject.GetComponent<HPbarScript>().HPPercentDecrease((float)damage / hp);
+        gameObject.GetComponent<HPbarScript>().HPchange((hp - damage) / hp);
 
         hp -= damage;
+
 
         // Если здоровье на нуле - умираем.
         if (hp <= 0) Death();
@@ -40,19 +43,6 @@ public class MortalScript : MonoBehaviour {
 
     public void Death()
     {
-        // Передаем индикатор цели следующему врагу.
-        /*
-        selectableUnits = gameControl.GetComponent<GameControl>().GetMinions();
-        foreach (GameObject SelectableUnit in selectableUnits)
-        {
-            if (SelectableUnit.gameObject.GetComponent<UnitScript>().Selected)
-            {
-                SelectableUnit.gameObject.GetComponent<UnitScript>().UnsetSelected();
-                SelectableUnit.gameObject.GetComponent<UnitScript>().SetSelected();
-            }
-        }
-        */
-
         // Сообщаем общему скрипту, что нужно удалить юнита из всех списков.
         gameControl.GetComponent<GameControl>().DeleteUnit(gameObject);
         
@@ -70,7 +60,6 @@ public class MortalScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        bool isMinion = gameControl.GetComponent<GameControl>().GetMinions().Contains(gameObject);
         if ((other.name == "Fountain") && isMinion) StartCoroutine(Healer());
     }
 
@@ -79,13 +68,18 @@ public class MortalScript : MonoBehaviour {
         StopCoroutine("Healer");
     }
 
+    public float GetHP ()
+    {
+        return hp;
+    }
+
     IEnumerator Healer()
     {
         
         while (hp < maxhp)
         {
             // Увеличиваем индикатор хп
-            gameObject.GetComponent<HPbarScript>().HPPercentIncrease((float)healHPinSec / hp);
+            gameObject.GetComponent<HPbarScript>().HPchange((hp + healHPinSec) / hp);
             // Увеличиваем хп
             hp += healHPinSec;
             // Выжидаем и повторяем.

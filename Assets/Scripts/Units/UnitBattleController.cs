@@ -9,19 +9,30 @@ public class UnitBattleController : MonoBehaviour {
     public int attackDamage;
     public float attackDelay;
     public float checkDelay;
-    private SpriteRenderer AttackMarker;
+    private SpriteRenderer attackMarker;
     private Color markerColor;
 
     // Use this for initialization
     void Start () {
         // Получаем ссылку на маркер атаки, и выключаем его
-        AttackMarker = transform.Find("AttackMarker").gameObject.GetComponent<SpriteRenderer>();
-        markerColor = AttackMarker.material.color;
+        attackMarker = transform.Find("AttackMarker").gameObject.GetComponent<SpriteRenderer>();
+        markerColor = attackMarker.material.color;
         markerColor.a = 0;
-        AttackMarker.material.color = markerColor;
+        attackMarker.material.color = markerColor;
+
+        // Получаем ссылку на маркер атаки этого юнита, устанавливаем его размер по радиусу атаки юнита.
+        float markerSize = attackMarker.bounds.size.x / 2;
+        attackMarker.transform.localScale = Vector3.one * attackRange / markerSize;
 
         // Запускаем проверку цели.
         StartCoroutine(TargetCheck());
+    }
+
+    private void Update()
+    {
+
+        Debug.DrawRay(gameObject.transform.position, Vector3.right * attackRange, Color.yellow);
+
     }
 
     public float GetAttackRange()
@@ -74,7 +85,7 @@ public class UnitBattleController : MonoBehaviour {
         for (float i = 1f; i > -0.1f; i -= 0.1f)
         {
             markerColor.a = i;
-            AttackMarker.material.color = markerColor;
+            attackMarker.material.color = markerColor;
             yield return new WaitForSeconds(0.03f);
         }
     }

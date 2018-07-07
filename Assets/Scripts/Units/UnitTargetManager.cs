@@ -35,8 +35,8 @@ public class UnitTargetManager : MonoBehaviour {
 
     private void Update()
     {
-            if (target && isMinion) Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.green);
-            if (target && !isMinion) Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.red);
+            if (target && isMinion) Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.green, .1f);
+            if (target && !isMinion) Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.red, .1f);
 
     }
 
@@ -64,8 +64,8 @@ public class UnitTargetManager : MonoBehaviour {
             if (opponentArray.Count > 0)
             {
                 ClosestEnemySearch();
-                bool sofaClosestThanMinion = (GObjDistance(gameObject, sofa) < GObjDistance(gameObject, target)); // НЕ РАБОТАЕТ
-                bool badHealth = (gameObject.GetComponent<MortalScript>().hp < gameObject.GetComponent<MortalScript>().maxhp / 2);
+                bool sofaClosestThanMinion = (GObjDistance(gameObject, sofa) < GObjDistance(gameObject, target));
+                bool badHealth = (gameObject.GetComponent<MortalScript>().GetHP() < gameObject.GetComponent<MortalScript>().maxhp / 2);
                 if (sofaClosestThanMinion || badHealth) SetTarget(sofa);
             }
             else SetTarget(sofa);
@@ -97,8 +97,8 @@ public class UnitTargetManager : MonoBehaviour {
         // Миньонам - переставить маркеры цели
         if (isMinion) gameControl.GetComponent<GameControl>().TargetMarkerUpdate();
 
-        Debug.Log("is target = " + (bool)target);
-        Debug.Log("set target = " + target);
+        //Debug.Log("is target = " + (bool)target);
+       // Debug.Log("set target = " + target);
         // При выборе цели - начинаем к ней двигаться
         if (target) gameObject.GetComponent<UnitMoving>().SetNavTarget(target.transform);
         //else gameObject.GetComponent<UnitMoving>().SetTarget(null);

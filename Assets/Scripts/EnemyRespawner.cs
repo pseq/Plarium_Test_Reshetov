@@ -79,6 +79,5 @@ public class EnemyRespawner : MonoBehaviour {
         // Телепортируем свежесозданного юнита в случайную точку рядом с точкой респауна
         Vector2 newBornPositionDelta = Random.insideUnitCircle * respawnArea;
         newBornEnemy.GetComponent<NavMeshAgent>().Warp(gameObject.transform.position + new Vector3(newBornPositionDelta.x, 0, newBornPositionDelta.y));
-
     }
 }
