@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 
 public class UnitTargetManager : MonoBehaviour {
@@ -30,25 +28,23 @@ public class UnitTargetManager : MonoBehaviour {
         if (isMinion) opponentArray = gameControl.GetComponent<GameControl>().GetEnemies();
         else opponentArray = gameControl.GetComponent<GameControl>().GetMinions();
 
+        // Запускаем автообновление цели
         StartCoroutine(TargetUpdater());
     }
 
+    // Указатели на текущие цели для дебага
     private void Update()
     {
             if (target && isMinion) Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.green, .1f);
             if (target && !isMinion) Debug.DrawLine(gameObject.transform.position, target.transform.position, Color.red, .1f);
-
     }
 
+    // Логика автовыбора цели
     public void AutosetTarget()
     {
-
-        
-        //TODO сократить if (opponentArray.Count > 0)
-        // а если его нет - к фонтану или дивану
+        // Миньоны движутся к фонтану, а при появлении врагов - к ним
         if (isMinion)
         {
-            //if (target) Debug.DrawRay(gameObject.transform.position, target.transform.position, Color.green);
             if (firstTarget) SetTarget(firstTarget);
                 else
                 {
@@ -58,8 +54,7 @@ public class UnitTargetManager : MonoBehaviour {
         }
         else
         {
-            //if (target) Debug.DrawRay(gameObject.transform.position, target.transform.position, Color.red);
-            // При отсутствии миньонов враги атакуют диван.
+            // Враги при отсутствии миньонов атакуют диван.
             // Если есть миньон ближе дивана и здоровье > 50% - враг атакует этого миньона
             if (opponentArray.Count > 0)
             {
@@ -72,24 +67,27 @@ public class UnitTargetManager : MonoBehaviour {
         }
     }
 
+    // Ищем ближайшего противника и устанавливаем целью
     public void ClosestEnemySearch()
     {
         SetTarget((GameObject)opponentArray[0]);
         foreach (GameObject opp in opponentArray) if (GObjDistance(gameObject, opp) < GObjDistance(gameObject, target)) target = opp;
     }
 
+    // Расстояние между двумя объектами
     private float GObjDistance(GameObject a, GameObject b)
     {
         return Vector3.Distance(a.transform.position, b.transform.position);
     }
 
+    // Установка приоритетной цели при выделении миньона
     public void SetFirstTarget(GameObject target)
     {
         SetTarget(target);
         firstTarget = target;
     }
 
-
+    // Установка цели
     public void SetTarget(GameObject target)
     {
         // Назначить новую цель
@@ -97,13 +95,11 @@ public class UnitTargetManager : MonoBehaviour {
         // Миньонам - переставить маркеры цели
         if (isMinion) gameControl.GetComponent<GameControl>().TargetMarkerUpdate();
 
-        //Debug.Log("is target = " + (bool)target);
-       // Debug.Log("set target = " + target);
         // При выборе цели - начинаем к ней двигаться
         if (target) gameObject.GetComponent<UnitMoving>().SetNavTarget(target.transform);
-        //else gameObject.GetComponent<UnitMoving>().SetTarget(null);
     }
 
+    // Периодическое обновление цели
     IEnumerator TargetUpdater()
     {
         while (true)
@@ -112,7 +108,6 @@ public class UnitTargetManager : MonoBehaviour {
             yield return new WaitForSeconds(targetUpdateDelay);
         }
     }
-
 
     public GameObject GetTarget()
     {
@@ -148,22 +143,4 @@ public class UnitTargetManager : MonoBehaviour {
             }
         }
     }
-
-    void GetEnemies()
-    {
-
-    }
-
-    void GetMinNavDistance()
-    {
-        // получить расстояние
-        // найти минимальное
-    }
-
-    void GetMinDistanceTarget()
-    {
-
-    }
-
-
 }

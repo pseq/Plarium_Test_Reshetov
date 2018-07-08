@@ -20,21 +20,14 @@ public class UnitBattleController : MonoBehaviour {
         markerColor.a = 0;
         attackMarker.material.color = markerColor;
 
-        // Получаем ссылку на маркер атаки этого юнита, устанавливаем его размер по радиусу атаки юнита.
+        // Устанавливаем размер маркера атаки по радиусу атаки юнита.
         float markerSize = attackMarker.bounds.size.x / 2;
         attackMarker.transform.localScale = Vector3.one * attackRange / markerSize;
 
         // Запускаем проверку цели.
         StartCoroutine(TargetCheck());
     }
-
-    private void Update()
-    {
-
-        Debug.DrawRay(gameObject.transform.position, Vector3.right * attackRange, Color.yellow);
-
-    }
-
+ 
     public float GetAttackRange()
     {
         return attackRange;

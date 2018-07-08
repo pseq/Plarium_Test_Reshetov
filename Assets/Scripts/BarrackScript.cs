@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class BarrackScript : MonoBehaviour {
 
     public float respawnTimeDelta;
-    private int level;
     public int maxLevel;
     public int levelImprover;
     public int countToUpgrade;
@@ -15,16 +14,20 @@ public class BarrackScript : MonoBehaviour {
     public Material unitMaterial;
     public GameObject gameControl;
     private int counter;
+    private int level;
+
 
     // Use this for initialization
     void Start()
     {
+        // Устанавливаем начальные значения уровня и счетчика произведенных юнитов
         level = 1;
         counter = 0;
         // Начинаем генерацию юнитов.
         StartCoroutine(UnitGenerationCycle());
     }
 
+    // Цикл генерации юнитов
     IEnumerator UnitGenerationCycle()
     {
         while (true)
@@ -43,10 +46,12 @@ public class BarrackScript : MonoBehaviour {
         }
     }
 
+    // Генерация юнита
     IEnumerator MinionGenerate()
     {
         float delta = respawnTimeDelta / 100;
         float status = respawnTimeDelta;
+        // Управление прогресс-баром казармы
         while (status > delta)
         {
             gameObject.GetComponent<HPbarScript>().HPchange((status - delta) / status);
@@ -67,6 +72,7 @@ public class BarrackScript : MonoBehaviour {
         if (counter >= countToUpgrade) BarrackUpgrade();
     }
 
+    // Повышение уровня казармы
     private void BarrackUpgrade()
     {
         if (level < maxLevel)

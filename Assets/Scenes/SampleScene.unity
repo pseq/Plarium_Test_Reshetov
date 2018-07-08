@@ -2166,7 +2166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9234bd5dbe2a34199a82d4cae21bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhp: 300
+  maxhp: 100
   healHPinSec: 0
   priseForHead: 0
   armor: 0

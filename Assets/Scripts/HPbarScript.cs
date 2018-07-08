@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HPbarScript : MonoBehaviour {
 
@@ -11,7 +9,6 @@ public class HPbarScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        // Получаем трансформ индикатора статуса здоровья.
         barBase = transform.Find("HP");
         hpBar = barBase.Find("HPbar").GetComponent<SpriteRenderer>();
         hpBar.drawMode = SpriteDrawMode.Sliced;
@@ -26,6 +23,7 @@ public class HPbarScript : MonoBehaviour {
         barBase.LookAt(leader);
     }
 
+    // Изменение размера индикатора здоровья
     public void HPchange(float k)
     {
         if (hpBar)
@@ -33,7 +31,8 @@ public class HPbarScript : MonoBehaviour {
             hpBar.size = new Vector2(hpBar.size.x * k, hpBar.size.y);
         }
     }
-
+    
+    // Сброс размеров индикатора
     public void HPchange(bool reset)
     {
         if (hpBar)

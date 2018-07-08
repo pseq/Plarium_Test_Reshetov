@@ -9,13 +9,12 @@ public class EnemyRespawner : MonoBehaviour {
     public float respawnTimeDelta;
     public float betweenWavesDelta;
     public GameObject unit;
-    private float respawnArea = 10f;
     public Material enemyMaterial;
     public GameObject gameControl;
-    public GameObject InitialTarget;
+    public GameObject initialTarget;
     public int firstWavecount;
     public int waves;
-
+    private float respawnArea = 10f;
     private int respawnersCount;
     private int avengersCount;
     private float testAliveDelay = 0.1f;
@@ -79,7 +78,7 @@ public class EnemyRespawner : MonoBehaviour {
         // Присваиваем свежесозданному врагу материал.
         newBornEnemy.GetComponent<MeshRenderer>().material = enemyMaterial;
         // Если задана исходная цель - указываем ему юниту.
-        if (InitialTarget) newBornEnemy.GetComponent<UnitTargetManager>().SetTarget(InitialTarget);
+        if (initialTarget) newBornEnemy.GetComponent<UnitTargetManager>().SetTarget(initialTarget);
         // Телепортируем свежесозданного юнита в случайную точку рядом с точкой респауна
         Vector2 newBornPositionDelta = Random.insideUnitCircle * respawnArea;
         newBornEnemy.GetComponent<NavMeshAgent>().Warp(gameObject.transform.position + new Vector3(newBornPositionDelta.x, 0, newBornPositionDelta.y));

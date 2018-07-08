@@ -10,6 +10,7 @@ public class GameControl : MonoBehaviour {
     private ArrayList minions;
     private ArrayList enemies;
     private ArrayList selectedMinions;
+    private bool gameOver = false;
     public Text text;
     public Text goldIndicator;
 
@@ -28,13 +29,17 @@ public class GameControl : MonoBehaviour {
         StartCoroutine(Countdown());
     }
 
+    // Старт/стоп производства юнитов на респаунах и казармах
     private void UnitProducingSwitcher()
     {
+        // Перебираем все респауны и казармы
         GameObject[] producers = GameObject.FindGameObjectsWithTag("Producer");
         foreach (GameObject producer in producers)
         {
             BarrackScript[] barracks = producer.GetComponents<BarrackScript>();
             EnemyRespawner[] enRespawners = producer.GetComponents<EnemyRespawner>();
+
+            // На каждом - отключаем скрипт и корутины
             foreach (BarrackScript script in barracks)
             {
                 if (script.enabled)
@@ -56,6 +61,7 @@ public class GameControl : MonoBehaviour {
         }
     }
 
+    // обратный отсчет при начале игры
     IEnumerator Countdown()
     {
         // Отсчитываем десять секунд.
@@ -63,22 +69,28 @@ public class GameControl : MonoBehaviour {
         {
             text.text = i.ToString();
             if (i < 0) text.text = "GO";
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(1f);
         }
         text.text = "";
         UnitProducingSwitcher();
     }
 
+    // Геймовер
     public void GameOver()
     {
         text.text = "Game over";
         UnitProducingSwitcher();
+        gameOver = true;
     }
 
+    // Победа
     public void Win()
     {
-        text.text = "minions wins";
-        UnitProducingSwitcher();
+        if (!gameOver)
+        {
+            text.text = "Minions wins";
+            UnitProducingSwitcher();
+        }
     }
 
 
@@ -131,11 +143,13 @@ public class GameControl : MonoBehaviour {
         selectedMinions.Add(unit);
     }
 
+    // Чистим миньона из списка выделенных
     public void DeleteSelected(GameObject unit)
     {
         if (selectedMinions.Contains(unit)) selectedMinions.Remove(unit);
     }
 
+    // Посмертное удаление юнита из всех списков
     public void DeleteUnit(GameObject unit)
     {
         if (enemies.Contains(unit)) enemies.Remove(unit);

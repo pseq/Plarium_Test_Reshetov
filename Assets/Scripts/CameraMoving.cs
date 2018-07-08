@@ -23,12 +23,11 @@ public class CameraMoving : MonoBehaviour {
         maxX = Screen.width - border;
         maxY = Screen.height - border;
 
-        // Получаем рендереры ограничителей.
+        // Получаем рендереры ограничителей перемещения камеры.
         leftStopperRenderer = leftStopper.GetComponent<Renderer>();
         rightStopperRenderer = rightStopper.GetComponent<Renderer>();
         topStopperRenderer = topStopper.GetComponent<Renderer>();
         downtStopperRenderer = downtStopper.GetComponent<Renderer>();
-
     }
 	
 	// Update is called once per frame

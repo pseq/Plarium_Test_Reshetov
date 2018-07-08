@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class UnitScript : MonoBehaviour {
 
-    private bool Selected;
-    private SpriteRenderer SelectMarker;
+    private bool selected;
+    private SpriteRenderer selectMarker;
     private MeshRenderer targetMarker;
     private ArrayList selectableUnits;
     private GameObject gameControl;
@@ -14,8 +14,8 @@ public class UnitScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // Получаем ссылку на маркер выбора юнита, и выключаем его.
-        SelectMarker = transform.Find("SelectMarker").GetComponent<SpriteRenderer>();
-        SelectMarker.enabled = false;
+        selectMarker = transform.Find("SelectMarker").GetComponent<SpriteRenderer>();
+        selectMarker.enabled = false;
         // Получаем ссылку на маркер цели этого юнита, и выключаем его.
         targetMarker = transform.Find("TargetMarker").GetComponent<MeshRenderer>();
         targetMarker.enabled = false;
@@ -23,14 +23,15 @@ public class UnitScript : MonoBehaviour {
         // Получаем объект с общими параметрами игры.
         gameControl = GameObject.FindGameObjectWithTag("GameController");
 
+        // Получаем массив выбираемых юнитов
         selectableUnits = gameControl.GetComponent<GameControl>().GetMinions();
     }
 
     public void SetSelected ()
     {
         // При выборе юнита - обозначаем его как выделенный.
-        Selected = true;
-        SelectMarker.enabled = true;
+        selected = true;
+        selectMarker.enabled = true;
 
         // Добавляем в массив выбранных
         gameControl.GetComponent<GameControl>().AddSelected(gameObject);
@@ -42,8 +43,8 @@ public class UnitScript : MonoBehaviour {
     public void UnsetSelected ()
     {
         // При отмене выбора юнита - снимаем выделение.
-        Selected = false;
-        SelectMarker.enabled = false;
+        selected = false;
+        selectMarker.enabled = false;
 
         // Удаляем из массива выбранных
         gameControl.GetComponent<GameControl>().DeleteSelected(gameObject);
